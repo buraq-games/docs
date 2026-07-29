@@ -8,7 +8,11 @@ If you haven't read it yet, read [Milestones & Planning](milestones-and-planning
 first. This page shows you *where* our Agile process (sprints, backlog,
 definition of done) lives inside Plane.
 
-<!-- TODO: add our Plane workspace URL and how to request an invite -->
+Plane lives at [plane.buraq.games](https://plane.buraq.games), signed into
+with your Buraq account — see
+[Accessing Buraq's Tools](../onboarding/accessing-buraq-tools.md) if you
+haven't logged in yet. There's no separate invite step; an admin sets up
+your account and you're in.
 
 ## What Plane is
 

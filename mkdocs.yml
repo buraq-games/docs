@@ -29,12 +29,14 @@ nav:
   - Home: index.md
   - Onboarding:
       - Getting Started: onboarding/getting-started.md
+      - Accessing Buraq's Tools: onboarding/accessing-buraq-tools.md
       - Team & Tools: onboarding/team-and-tools.md
       - First Week Checklist: onboarding/first-week-checklist.md
   - Engineering:
       - Godot Conventions: engineering/godot-conventions.md
       - Git Workflow: engineering/git-workflow.md
       - Architecture: engineering/architecture.md
+      - Infrastructure: engineering/infrastructure.md
       - Tooling: engineering/tooling.md
   - Art:
       - Asset Pipeline: art/asset-pipeline.md
