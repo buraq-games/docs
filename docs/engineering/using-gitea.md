@@ -32,9 +32,33 @@ git clone https://git.buraq.games/buraq/some-repo.git
 git clone git@git.buraq.games:buraq/some-repo.git
 ```
 
-For SSH, add your public key under **Settings → SSH / GPG Keys** once
-logged in — same as GitHub. For HTTPS pushes (and any tool that wants
-git-over-HTTP auth), use a **personal access token** instead of a password:
+### Adding your SSH key
+
+1. Generate a key pair if you don't have one:
+   ```bash
+   ssh-keygen -t ed25519 -C "your@email.com"
+   ```
+
+2. Copy the public key:
+   ```bash
+   pbcopy < ~/.ssh/id_ed25519.pub
+   ```
+
+3. In the Gitea web UI, go to **Settings → SSH / GPG Keys → Add Key**, paste the public key, and save.
+
+4. Verify the key is registered by signing a test challenge:
+   ```bash
+   echo -n 'gitea' | ssh-keygen -Y sign -n gitea -f ~/.ssh/id_ed25519
+   ```
+   This signs the string `gitea` with your key using the SSH signature format Gitea expects. If the key is registered correctly, Gitea can verify it against the public key on file.
+
+5. Test the SSH connection:
+   ```bash
+   ssh -T git@git.buraq.games
+   ```
+
+For HTTPS pushes (and any tool that wants git-over-HTTP auth), use a
+**personal access token** instead of a password:
 
 **Settings → Applications → Generate New Token**, then use the token as
 your password when git prompts for one (or embed it: `https://<token>@git.buraq.games/buraq/some-repo.git`).
@@ -61,6 +85,20 @@ file works.
 One consequence: regular `engineers` team members can push to any repo in
 the org but can't **create** new repos or org-level settings — that needs
 `Owners` (squad leads and admins). Ask a lead if you need a new repo.
+
+## Repo naming conventions
+
+Repositories follow a prefix convention to make the org's purpose clear at a glance:
+
+| Prefix       | Purpose              | Example                        |
+|--------------|----------------------|--------------------------------|
+| `game-*`     | Game projects        | `game-wave-survivor`           |
+| `docs`       | Documentation        | `docs`                         |
+| `infra`      | Infrastructure       | `infra`                        |
+| `tool-*`     | Shared tools         | `tool-rust-bridge`             |
+| `meta-*`     | Meta/org-wide        | `meta-handbook`                |
+
+Use `tea repo create --name game-<name>` when creating game repos.
 
 ## The `tea` CLI
 
