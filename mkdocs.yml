@@ -51,6 +51,7 @@ nav:
       - Build & Release: production/build-and-release.md
       - Milestones & Planning: production/milestones-and-planning.md
       - Using Plane: production/using-plane.md
+      - Managing users & squads: production/managing-users.md
   - Contributing:
       - How to Write Docs: contributing/how-to-write-docs.md
 
