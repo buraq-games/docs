@@ -1,5 +1,6 @@
 site_name: Buraq Squad Docs
 site_description: Internal documentation for game development at Buraq Squad
+site_url: https://docs.buraq.games/
 docs_dir: docs
 site_dir: site
 
