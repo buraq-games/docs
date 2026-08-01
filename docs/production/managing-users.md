@@ -3,35 +3,53 @@
 Everyone at Buraq has one account at [auth.buraq.games](https://auth.buraq.games),
 which signs you into Plane, Mail, and the other internal tools.
 
-## Viewing the directory (admins)
+## Viewing the directory
 
-Members of the `admins` group can open the
+Members of the `admins` group (and squad leads, and anyone in
+`directory-viewers`) can open the
 [Authentik admin interface](https://auth.buraq.games/if/admin/) and go to
 **Directory → Users** to see everyone, their email, and their groups. This
 works with your normal account — no superuser needed.
 
-## Assigning someone to a squad
+## Squads, leads, and other groups
 
-Squads are the discipline groups: `engineering`, `art`, `design`,
-`production`, `qa`.
+- **Squads** are the discipline groups: `engineering`, `art`, `design`,
+  `production`, `qa`. Squad groups are children of `members`, so squad
+  members automatically get app access (Plane, Mail).
+- **Leads**: each squad has a `<squad>-leads` group (e.g.
+  `engineering-leads`). Leads are automatically members of their squad,
+  can view the directory, and can hot-fix their own squad's membership in
+  the admin UI — but see the next section: git wins.
+- **`cto`**: inherits directory viewing (via `admins`) and app access.
+- **`directory-viewers`**: read-only directory access, no app access.
 
-1. In the admin interface, go to **Directory → Groups** and open the squad.
-2. On the **Users** tab, click **Add existing user** and pick the person.
+## Assigning someone to a squad (or any group)
 
-That's it. Squad groups are children of `members`, so squad members
-automatically get app access (Plane, Mail) — you don't need to add them to
-`members` separately.
+Group membership is managed **in git, not in the UI**. The source of truth
+is `authentik/blueprints/team-users.yaml` in the infra repo: add the group
+name to the person's `groups:` list and deploy. Example:
 
-## What admins can and can't do
+```yaml
+      groups:
+        - !Find [authentik_core.group, [name, engineering]]
+        - !Find [authentik_core.group, [name, engineering-leads]]
+```
 
-- **Can:** view all users and groups; add/remove people in the squad
-  groups and `members`.
-- **Can't:** edit the `admins` group, grant superuser, or change
-  Authentik configuration. Those need the break-glass `akadmin` account.
+Every deploy re-applies this file, so membership changes made in the admin
+UI are overwritten by the next deploy. (Leads' UI edits are a temporary
+convenience only — make it permanent by editing team-users.yaml.)
+
+## Who can do what
+
+- **Admins / cto / directory-viewers / leads:** view all users and groups.
+- **Leads only:** edit their own squad's membership in the UI (until the
+  next deploy re-asserts git).
+- **Nobody** (except break-glass `akadmin`): edit the `admins` group,
+  grant superuser, or change Authentik configuration.
 
 ## Adding a brand-new person
 
-Accounts themselves are managed in the infra repo
-(`authentik/blueprints/team-users.yaml`): add an entry, deploy, then run
-`scripts/onboard-user.sh <email>` to set their initial password and add
-them to `members`. Then assign their squad in the UI as above.
+Accounts are managed in the infra repo
+(`authentik/blueprints/team-users.yaml`): add an entry with their
+`groups:` (at minimum a squad, or `members` directly), deploy, then run
+`scripts/onboard-user.sh <email>` to set their initial password.
