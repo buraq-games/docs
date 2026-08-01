@@ -62,6 +62,18 @@ Click the **Mailcow** tile (or go to `https://mail.buraq.games`) and click
 Your `@buraq.games` mailbox is created automatically the first time you do
 this — no separate request needed.
 
+## Opening Gitea (engineering only)
+
+Click the **Gitea** tile (or go to `https://git.buraq.games`) and click
+**Sign in with authentik**. Gitea is engineering-only, so this tile only
+shows up if you're in the `engineering` squad or `admins`.
+
+There's no password login here — Gitea is SSO-only, same as Plane. Your
+first login creates your Gitea account and drops you into the `buraq`
+organization automatically, with no separate invite. See
+[Using Gitea](../engineering/using-gitea.md) for cloning, CI, and the `tea`
+CLI.
+
 ## Change your password
 
 Once logged in to Authentik, go to your account settings and set a

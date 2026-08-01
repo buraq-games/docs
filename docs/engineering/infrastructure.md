@@ -8,7 +8,7 @@ live in the `infra` repo.
 ## What's running
 
 Everything runs on a single VPS, deployed via GitHub Actions on every push
-to `main` in `buraq-games/infra`. Four pieces:
+to `main` in `buraq-games/infra`. Five pieces:
 
 | Service | What it's for |
 | ------- | -------------- |
@@ -16,6 +16,7 @@ to `main` in `buraq-games/infra`. Four pieces:
 | **Authentik** | Identity provider (IAM). One login for the team, used by every other tool below. |
 | **Plane** | Project management — sprints, tasks, bugs. See [Using Plane](../production/using-plane.md). |
 | **Mailcow** | Self-hosted mail server — `@buraq.games` mailboxes and webmail. |
+| **Gitea** | Self-hosted git hosting + CI (engineering-only). See [Using Gitea](using-gitea.md). |
 
 ## Identity: one account per person
 
@@ -26,11 +27,16 @@ early accounts predate this convention). Two access levels:
 - **`admins`** — infra-facing access (e.g. the Traefik dashboard), plus
   everything `members` can do.
 - **`members`** — regular teammate access: currently Plane and Mailcow.
+- **`engineering`** (a squad under `members`) — additionally gets Gitea,
+  with `engineering-leads`/`admins` landing in Gitea's `Owners` team
+  (org-admin) instead of the regular `engineers` team.
 
-Neither Plane nor Mailcow have their own separate login — both are
-configured to authenticate exclusively through Authentik ("Continue with
-Authentik" on Plane, "Single Sign-On" on Mailcow). There's no native
-email/password login on either.
+None of Plane, Mailcow, or Gitea have their own separate login — all three
+are configured to authenticate exclusively through Authentik ("Continue
+with Authentik" on Plane, "Single Sign-On" on Mailcow, "Sign in with
+authentik" on Gitea). There's no native email/password login on any of
+them — Gitea keeps a local break-glass `root` account for API/CLI recovery
+if Authentik itself is ever down, but it has no web login form either.
 
 New accounts are provisioned by an admin (declared in the `infra` repo,
 not self-service signup). A generated one-time password is issued out of

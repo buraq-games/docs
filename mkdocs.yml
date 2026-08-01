@@ -35,6 +35,7 @@ nav:
   - Engineering:
       - Godot Conventions: engineering/godot-conventions.md
       - Git Workflow: engineering/git-workflow.md
+      - Using Gitea: engineering/using-gitea.md
       - Architecture: engineering/architecture.md
       - Infrastructure: engineering/infrastructure.md
       - Tooling: engineering/tooling.md
