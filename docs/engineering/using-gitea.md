@@ -75,16 +75,31 @@ Everyone's Gitea org/team membership is computed from
 `authentik/blueprints/team-users.yaml` in the infra repo, the same file that
 drives your squad in Authentik. Squad membership maps to a Gitea team, and
 every deploy re-asserts it — so if you're added to `engineering` in that
-file, you land in the `engineers` team on the next deploy with no separate
+file, you land in the `Engineers` team on the next deploy with no separate
 Gitea-side step. This also means membership changes made by hand in the
 Gitea UI don't stick — the next deploy reverts them. If your access looks
 wrong, the fix is in `team-users.yaml`, not the Gitea UI. See
 [Managing users and squads](../production/managing-users.md) for how that
 file works.
 
-One consequence: regular `engineers` team members can push to any repo in
-the org but can't **create** new repos or org-level settings — that needs
-`Owners` (squad leads and admins). Ask a lead if you need a new repo.
+### Teams and permissions
+
+All teams live in the `buraq` organization and cover every repo in it,
+including repos created later.
+
+| Team | Who | What they can do |
+|---|---|---|
+| `Engineers` | everyone in the `engineering` squad | Push to any repo, and **create new repos** in the org. |
+| `Leads` | `engineering-leads` (technical leads) | Everything `Engineers` can, plus repo-level admin: repo settings, branch protection, collaborators. |
+| `Owners` | `admins` and `cto` | Organization admin: manage teams, org settings, and delete repos. |
+| `Bots` | the `buraq-devops` service account | Push to any repo and use packages. Used by CI, never a person. |
+
+Leads are in `Engineers` too (squad hierarchy), so they get its access
+as well. Only engineering and admins can sign in to Gitea — art, design,
+production, QA, and project managers don't have access.
+
+Engineers can't delete a repo or change its settings; ask a lead for
+that. Keep team work in the `buraq` org so access and CI apply.
 
 ## Repo naming conventions
 
@@ -144,7 +159,7 @@ jobs:
       - run: echo "hello from Gitea Actions"
 ```
 
-One shared runner (`act_runner`) picks up jobs from every repo in the
+One shared runner (Gitea Runner) picks up jobs from every repo in the
 instance — no per-repo runner setup needed. Check the **Actions** tab on
 your repo to see run status and logs.
 

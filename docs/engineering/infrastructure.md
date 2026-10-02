@@ -28,8 +28,12 @@ early accounts predate this convention). Two access levels:
   everything `members` can do.
 - **`members`** — regular teammate access: currently Plane and Mailcow.
 - **`engineering`** (a squad under `members`) — additionally gets Gitea,
-  with `engineering-leads`/`admins` landing in Gitea's `Owners` team
-  (org-admin) instead of the regular `engineers` team.
+  landing in the `Engineers` team (push and create repos).
+  `engineering-leads` also land in `Leads` (repo admin), and
+  `admins`/`cto` land in Gitea's `Owners` team (org admin). See
+  [Using Gitea](using-gitea.md#teams-and-permissions) for the full table.
+- **`project-managers`** (under `members`) — can view the directory;
+  no Gitea access.
 
 None of Plane, Mailcow, or Gitea have their own separate login — all three
 are configured to authenticate exclusively through Authentik ("Continue
